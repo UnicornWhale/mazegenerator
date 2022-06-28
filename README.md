@@ -7,11 +7,17 @@ Generates random mazes of arbitrary sizes
 The way the maze generator works is to start with a grid that has
 an odd number of rows and columns. Evern cell starts as a wall:
 
+
 X X X X X
+
 X X X X X
+
 X X X X X
+
 X X X X X
+
 X X X X X
+
 
 The defining characteristic of a maze is that there is one and only
 one possible path between any two points in the maze. That means that
@@ -20,22 +26,34 @@ between them or it breaks the rules of what a maze is. To take advantage
 of that fact, we make every cell that is in both an even row and an
 even column a floor tile, and assign it a unique group number:
 
+
 X X X X X
+
 X 1 X 2 X
+
 X X X X X
+
 X 3 X 4 X
+
 X X X X X
+
 
 Now we take the set of walls that are connecting the groups (the set of
 tiles that have either an even row OR an even column, but not both and
 also are not on the edge of the map) and randomly select one of them to
 turn into a floor tile (O in the diagram below):
 
+
 X X X X X
+
 X 1 O 2 X
+
 X X X X X
+
 X 3 X 4 X
+
 X X X X X
+
 
 After selecting that tile, we check the adjacent tiles (not diagonals),
 to see which group those tiles belong to. So long as no two adjacent floor
@@ -47,53 +65,89 @@ all of the floor tiles that are connected to our newly made floor tile.
 We then remove the wall we changed from our list of potential walls because
 it isn't a wall anymore:
 
+
 X X X X X
+
 X 1 1 1 X
+
 X X X X X
+
 X 3 X 4 X
+
 X X X X X
+
 
 Now we repeat the process:
 
+
 X X X X X
+
 X 1 1 1 X
+
 X X X O X
+
 X 3 X 4 X
+
 X X X X X
+
 
 ->
 
+
 X X X X X
+
 X 1 1 1 X
+
 X X X 1 X
+
 X 3 X 1 X
+
 X X X X X
+
 
 And repeat again:
 
+
 X X X X X
+
 X 1 1 1 X
+
 X O X 1 X
+
 X 3 X 1 X
+
 X X X X X
+
 
 ->
 
+
 X X X X X
+
 X 1 1 1 X
+
 X 1 X 1 X
+
 X 1 X 1 X
+
 X X X X X
+
 
 And repeat again, but this time the wall we randomly select has two of
 the same group number that it would be connecting if we were to turn it
 into a floor tile:
 
+
 X X X X X
+
 X 1 1 1 X
+
 X 1 X 1 X
+
 X 1 O 1 X
+
 X X X X X
+
 
 If we turn the selected tile into a floor, we would end up with a closed
 loop. Mazes, by definition, cannot have closed loops since there must be
